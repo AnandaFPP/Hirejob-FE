@@ -10,9 +10,14 @@ import carousel3 from "../styles/assets/img/Ellipse 328.png";
 import carousel4 from "../styles/assets/img/Ellipse 329.png";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 
 const landingPage = () => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    rootMargin: "-50px 0px", // Adjust rootMargin as needed to trigger the animation a bit before the element comes into view
+  });
   return (
     <div>
       <LoginNavbar />
@@ -21,8 +26,13 @@ const landingPage = () => {
           <div className="container mt-5">
             {/* First content */}
             <div className="row pb-5 pt-5">
-              <div className={`col-md-5 d-flex flex-column align-items-center ${styles.firstContent}`}>
-                <div className="" style={{}}>
+              <div
+                ref={ref}
+                className={`col-md-5 d-flex flex-column align-items-center ${
+                  styles.firstContent
+                } ${inView ? styles["slide-in"] : ""}`}
+              >
+                <div className="">
                   <h1
                     style={{ fontWeight: 700, lineHeight: "70px" }}
                     className="tagline"
@@ -55,7 +65,9 @@ const landingPage = () => {
                   src={lpimage1}
                   alt=""
                   id="first-content"
-                  className="w-100 h-100"
+                  className={`w-100 h-100 ${
+                    inView ? styles["slide-in-right"] : ""
+                  }`}
                 />
               </div>
             </div>
@@ -725,7 +737,10 @@ const landingPage = () => {
         </section>
         <section>
           <div className="container mt-5 mb-5">
-            <div className="d-flex justify-content-around align-items-center py-5" id={styles.promotion}>
+            <div
+              className="d-flex justify-content-around align-items-center py-5"
+              id={styles.promotion}
+            >
               <div className="col-md-6">
                 <h1 style={{ fontWeight: 600, color: "#FFFFFF" }}>
                   Lorem ipsum dolor sit amet.
