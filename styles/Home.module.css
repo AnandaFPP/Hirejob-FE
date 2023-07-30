@@ -1,129 +1,156 @@
-.container {
-  padding: 0 2rem;
+#navbar{
+  box-shadow: 0px 6px 40px 20px rgba(73, 71, 71, 0.25);
 }
 
-.main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
-
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-}
-
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-}
-
-.title,
-.description {
-  text-align: center;
-}
-
-.description {
-  margin: 4rem 0;
-  line-height: 1.5;
-  font-size: 1.5rem;
-}
-
-.code {
-  background: #fafafa;
+.navbar-toggler-icon {
+  border: 1px solid grey;
   border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-.grid {
+/* svg {
+  width: 100px;
+} */
+.firstContent {
+  padding-top: 100px;
+}
+
+#btnLogin {
+  border: 1px solid #5e50a1;
+}
+
+#first-content,
+#second-content {
+  width: 100%;
+}
+
+#hero {
+  background: linear-gradient(
+    to bottom,
+    #5e50a1 0%,
+    #5e50a1 30%,
+    #f3f4f8 30%,
+    #f3f4f8 100%
+  );
+}
+
+.p {
+  color: #46505C;
+}
+
+#promotion {
+  background: linear-gradient(to bottom right, #5e50a1 70%, #FFFFFF);
+  border-radius: 40px 8px;
+  position: relative;
+  border: 1px solid #5e50a1;
+}
+
+/* hr {
+  color: white;
+  height: 100px;
+} */
+
+.i {
+  color: #9B9B9B;
+}
+
+.profileCard {
+  border-bottom: 2px solid #F2F3F4;
+}
+
+.pagination li {
+  margin: 0px 5px;
+}
+
+.pagination .pageItemActive .pagelink {
+  background-color: #5E50A1;
+  color: white;
+}
+
+.pagination li a {
+  color: black;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.portofolio-card p {
+  margin-top: 5px;
+}
+
+.profile-data {
+  font-size: 14px;
+}
+
+.buttonStyle:hover {
+  background-color: #FBB017;
+  color: white;
+}
+
+.buttonStyle {
+  background-color: white;
+  color: #FBB017;
+  font-weight: 700;
+  font-size: 16px;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #FBB017;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .tagline {
+    font-size: 30px;
+    line-height: 43px !important;
+  }
+  .carousel-inner .carousel-item > div {
+    display: none;
+  }
+  .carousel-inner .carousel-item > div:first-child {
+    display: block;
+  }
+
+  .btn {
+    margin: 0;
+  }
+
+  .information {
+    margin-top: 20px;
+  }
+
+  .firstContent {
+    padding-top: 0;
+  }
+
+
+}
+
+@media only screen and (max-width: 992px) {
+  .tagline {
+    font-size: 30px !important;
+    line-height: 50px !important;
+  }
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
 }
 
-.card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
-}
+/* display 3 */
+@media (min-width: 768px) {
+  .carousel-inner .carousel-item-right.active,
+  .carousel-inner .carousel-item-next {
+    transform: translateX(33.333%);
+  }
 
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
-}
-
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-}
-
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
-}
-
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
+  .carousel-inner .carousel-item-left.active,
+  .carousel-inner .carousel-item-prev {
+    transform: translateX(-33.333%);
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .card,
-  .footer {
-    border-color: #222;
-  }
-  .code {
-    background: #111;
-  }
-  .logo img {
-    filter: invert(1);
-  }
+.carousel-inner .carousel-item-right,
+.carousel-inner .carousel-item-left {
+  transform: translateX(0);
 }

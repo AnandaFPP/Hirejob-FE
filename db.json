@@ -1,0 +1,156 @@
+{
+  "workers": [
+    {
+      "id": 1,
+      "worker_name": "John Doe",
+      "worker_email": "johndoe@gmail.com",
+      "worker_phone": "081255253353",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456",
+      "worker_token": ""
+    },
+    {
+      "id": 2,
+      "worker_name": "Louis Tomlinson",
+      "worker_email": "louis@gmail.com",
+      "worker_phone": "081255253353",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456"
+    },
+    {
+      "id": 3,
+      "worker_name": "Harry Styles",
+      "worker_email": "harry@gmail.com",
+      "worker_phone": "081255253353",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456"
+    },
+    {
+      "worker_name": "",
+      "worker_email": "",
+      "worker_phone": "",
+      "worker_pass": "",
+      "worker_confirm_pass": "",
+      "id": 4
+    },
+    {
+      "worker_name": "",
+      "worker_email": "",
+      "worker_phone": "",
+      "worker_pass": "",
+      "worker_confirm_pass": "",
+      "id": 5
+    },
+    {
+      "worker_name": "",
+      "worker_email": "",
+      "worker_phone": "",
+      "worker_pass": "",
+      "worker_confirm_pass": "",
+      "id": 6
+    },
+    {
+      "worker_name": "Mike Wazowski",
+      "worker_email": "Wazowski@gmail.com",
+      "worker_phone": "081299890090",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456",
+      "id": 7
+    },
+    {
+      "worker_name": "Frostbite",
+      "worker_email": "frosbite@gmail.com",
+      "worker_phone": "081234567890",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456",
+      "id": 8
+    },
+    {
+      "worker_name": "Jimmy Neutron",
+      "worker_email": "neutron@gmail.com",
+      "worker_phone": "082233334444",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456",
+      "id": 9
+    },
+    {
+      "worker_name": "Rudy Tabootie",
+      "worker_email": "tabootie@gmail.com",
+      "worker_phone": "089988887777",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456",
+      "id": 10
+    },
+    {
+      "worker_name": "Doctor Morty",
+      "worker_email": "morty@gmail.com",
+      "worker_phone": "083322221111",
+      "worker_pass": "123456",
+      "worker_confirm_pass": "123456",
+      "id": 11
+    },
+    {
+      "worker_name": "Eerling Haaland",
+      "worker_email": "halalandtoyyiban@gmail.com",
+      "worker_phone": "082211114444",
+      "worker_pass": "password123",
+      "worker_confirm_pass": "password123",
+      "id": 12
+    },
+    {
+      "worker_name": "Marilyn Manson",
+      "worker_email": "marilyn@gmail.com",
+      "worker_phone": "0869420666",
+      "worker_pass": "password123",
+      "worker_confirm_pass": "password123",
+      "id": 13
+    },
+    {
+      "worker_name": "Yeat",
+      "worker_email": "yeat@gmail.com",
+      "worker_phone": "0842069666",
+      "worker_pass": "password123",
+      "worker_confirm_pass": "password123",
+      "id": 14
+    },
+    {
+      "worker_name": "Travis Scott",
+      "worker_email": "travis@gmail.com",
+      "worker_phone": "0899999999",
+      "worker_pass": "password123",
+      "worker_confirm_pass": "password123",
+      "id": 15
+    },
+    {
+      "worker_email": "louis@gmail.com",
+      "worker_pass": "123456",
+      "id": 16
+    },
+    {
+      "worker_email": "louis@gmail.co.id",
+      "worker_pass": "123456",
+      "id": 17
+    },
+    {
+      "worker_email": "johndoe@gmail.com",
+      "worker_pass": "123456",
+      "id": 18
+    },
+    {
+      "worker_email": "johndoe@gmail.com",
+      "worker_pass": "123456",
+      "id": 19
+    }
+  ],
+  "job_experience": [
+    {
+      "id": 1,
+      "worker_id": 1,
+      "position": "Senior Engineer",
+      "company_name": "PT. Lazada Indonesia",
+      "from": "January 2020",
+      "until": "March 2020",
+      "description": "I've worked in PT Lazada Indonesia as Senior Engineer for about 3 months."
+    }
+  ]
+}
