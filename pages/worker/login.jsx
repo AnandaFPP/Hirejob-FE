@@ -4,64 +4,66 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import swal from "sweetalert";
-// import { generateWorkerToken } from "../utils/jwt"
+import Cookies from "js-cookie";
 
 const login = () => {
   let [worker_email, setEmail] = useState("");
-  let [worker_pass, setPassword] = useState("");
+  let [worker_confirm_pass, setPassword] = useState("");
   const router = useRouter();
 
   let handleLogin = (e) => {
     e.preventDefault();
 
-    if (!worker_email || !worker_pass) {
-      swal('Error', 'Please fill in all the required fields.', 'error'); // SweetAlert for validation
+    if (!worker_email || !worker_confirm_pass) {
+      swal("Error", "Please fill in all the required fields.", "error");
       return;
     }
 
-    // axios
-    //   .post("http://localhost:8000/workers", {worker_email, worker_pass})
-    //   .then((res) => {
-    //     console.log(res);
-    //     alert("Login successful!");
-    // swal({
-    //   title: "Login successful!",
-    //   icon: "success",
-    //   button: "Continue",
-    // });
-
-    //     // localStorage.setItem("token", res.data.data.token);
-    //     // console.log(res)
-    //     router.push("/home");
-    //     // window.location.reload();
-    //   })
-    //   .catch((err) => {
-    //     alert(err);
-    //   });
-
     axios
-      .get("http://localhost:8000/workers")
+      .post("http://localhost:8000/worker/login", {
+        worker_email,
+        worker_confirm_pass,
+      })
       .then((res) => {
-        const workers = res.data;
-        const foundWorker = workers.find(
-          (worker) =>
-            worker.worker_email === worker_email &&
-            worker.worker_pass === worker_pass
-        );
+        if (
+          res.data &&
+          res.data.data &&
+          res.data.data.token &&
+          res.data.data.worker_id
+        ) {
+          console.log(res);
+          swal({
+            title: "Login successful!",
+            icon: "success",
+            button: "Continue",
+          });
 
-        if (foundWorker) {
-          // const token = generateWorkerToken(foundWorker);
-          localStorage.setItem("worker_id", foundWorker.id);
-          // localStorage.setItem("worker_token", token);
+          Cookies.set("authToken", res.data.data.token, {
+            expires: 1,
+            path: "/",
+            secure: true,
+          });
 
-          swal("Success", "Login successful!", "success");
-          router.push("/home");
+          Cookies.set("worker_id", res.data.data.worker_id, {
+            expires: 1,
+            path: "/",
+            secure: true,
+          });
+
+          router.push("/landingPage");
         } else {
-          swal('Error', 'Invalid email or password. Please try again.', 'error');
+          console.log("Invalid response format");
+          swal({
+            title: "Login failed",
+            text: "Email or password is incorrect",
+            icon: "error",
+            button: "OK",
+          });
         }
       })
       .catch((err) => {
-        swal('Error', 'Error fetching workers data.', 'error');
+        console.error(err);
+        alert("Login failed. Please check your email and password.");
       });
   };
 
@@ -154,7 +156,7 @@ const login = () => {
                   id="exampleInputPassword1"
                   aria-describedby="passwordHelp"
                   placeholder="Masukkan kata sandi"
-                  value={worker_pass}
+                  value={worker_confirm_pass}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />

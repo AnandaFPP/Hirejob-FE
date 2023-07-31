@@ -3,8 +3,19 @@ import profile from "../../../styles/assets/img/Mask_Group2.png";
 import Image from "next/image";
 import styles from "../../../styles/Home.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    Cookies.remove('authToken');
+    Cookies.remove('worker_id');
+
+    router.push('/worker/login');
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg fixed-top mb-5 bg-light">
@@ -44,6 +55,9 @@ const Navbar = () => {
               />
             </svg>
           </Link>
+          <Link href="/home"
+             className="text-decoration-none font-weight-bold" style={{ color: "#5E50A1"}}>Home
+          </Link>
           <div className="row mt-3 m-2 align-items-center">
             <div>
               <a href="#" style={{ color: "black" }}>
@@ -82,7 +96,7 @@ const Navbar = () => {
                   Settings
                 </Link>
                 <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#" onClick={handleLogout}>
                   Logout
                 </a>
               </div>

@@ -73,6 +73,7 @@ const LoginNavbar = () => {
                   Masuk sebagai pekerja
                 </button>
               </Link>
+              <div style={{ width: "10px" }} />
               <Link href="/recruiter/login">
                 <button
                   className="btn btn-sm mr-lg-2 mb-2 mb-lg-0 w-100"

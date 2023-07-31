@@ -25,7 +25,7 @@ const register = () => {
   let handleRegister = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/workers", register)
+      .post("http://localhost:8000/worker/register", register)
       .then((res) => {
         console.log(res);
         alert("Register successful!");
