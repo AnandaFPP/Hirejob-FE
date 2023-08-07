@@ -626,13 +626,16 @@ const landingPage = () => {
                 <section>
                   <div className="container mt-5 mb-5">
                     <div
-                      className="d-flex justify-content-around align-items-center py-5"
+                      className="row justify-content-between align-items-center py-5"
                       id={styles.promotion}
                     >
                       <div className="col-md-6">
-                        <h1 style={{ fontWeight: 600, color: "#FFFFFF" }}>
+                        <h2
+                          style={{ fontWeight: 600, color: "#FFFFFF" }}
+                          className={`${styles.abstract}`}
+                        >
                           Lorem ipsum dolor sit amet.
-                        </h1>
+                        </h2>
                       </div>
                       <div className="col-md-4 text-center">
                         <button
@@ -1254,13 +1257,16 @@ const landingPage = () => {
                 <section>
                   <div className="container mt-5 mb-5">
                     <div
-                      className="d-flex justify-content-around align-items-center py-5"
+                      className="row justify-content-between align-items-center py-5"
                       id={styles.promotion}
                     >
                       <div className="col-md-6">
-                        <h1 style={{ fontWeight: 600, color: "#FFFFFF" }}>
+                        <h2
+                          style={{ fontWeight: 600, color: "#FFFFFF" }}
+                          className={`${styles.abstract}`}
+                        >
                           Lorem ipsum dolor sit amet.
-                        </h1>
+                        </h2>
                       </div>
                       <div className="col-md-4 text-center">
                         <button

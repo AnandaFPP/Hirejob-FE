@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Navbar from "../component/Navbar/Navbar";
 import Image from "next/image";
-import profilePic from '../../styles/assets/img/Large-photo-profile.png'
-import porto1 from '../../styles/assets/img/Rectangle 637.png'
-import porto2 from '../../styles/assets/img/Rectangle 638.png'
-import porto3 from '../../styles/assets/img/Rectangle 639.png'
-import porto4 from '../../styles/assets/img/Rectangle 640.png'
-import porto5 from '../../styles/assets/img/Rectangle 641.png'
-import porto6 from '../../styles/assets/img/Rectangle 642.png'
-import exp1 from '../../styles/assets/img/Rectangle 672.png'
+import defaultPic from '../../styles/assets/img/default.jpg'
+import axios from "axios";
+import Cookies from "js-cookie";
+import ListSkill from "../component/ListSkill/ListSkill";
+import ListPorto from "../component/ListPorto/ListPorto";
+import ListExp from "../component/ListExp/ListExp";
+import { format } from "date-fns";
+import { useRouter } from "next/router";
 // import { useRouter } from "next/router";
 
 const profile = () => {
+  const [workerData, setWorkerData] = useState([]);
+  
+  const router = useRouter();
+  // const { id } = router.query;
+
+
+  useEffect(() => {
+    const worker_id = Cookies.get("worker_id")
+    axios
+      .get(`http://localhost:8000/worker/profile/${worker_id}`)
+      .then(response => {
+        setWorkerData(response.data.data[0]);
+      })
+      .catch(error => {
+        console.error('Error fetching worker profile:', error);
+      });
+    },
+    
+    []);
+
   // const router = useRouter();
   return (
     <div>
@@ -27,135 +47,36 @@ const profile = () => {
                   {/* Profile details content goes here */}
                   <div className="m-auto pt-3">
                     <Image
-                      src={profilePic}
-                      alt=""
-                      className="rounded-circle border"
+                      src={defaultPic}
+                      className="m-auto my-3"
+                      height={150}
+                      width={150}
+                      alt="avatar"
+                      style={{ borderRadius: "50%" }}
                     />
                   </div>
                   <div className="container pt-4">
-                    <h5 style={{ fontWeight: 700 }}>John Doe</h5>
-                    <p>Web Developer</p>
+                    <h5 style={{ fontWeight: 700 }}>{workerData.worker_name}</h5>
+                    <p>{workerData.last_work}</p>
                     <i
                       className="bi bi-geo-alt"
                       style={{ color: "#9EA0A5", fontStyle: "normal" }}
                     >
                       {" "}
-                      Lorem, ipsum.
+                      {workerData.domicile}
                     </i>
                     <p style={{ color: "#9EA0A5" }} className="pt-3">
-                      Freelancer
+                      {workerData.last_work}
                     </p>
                     <p style={{ color: "#9EA0A5" }}>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Vestibulum erat orci, mollis nec gravida sed, ornare quis
-                      urna. Curabitur eu lacus fringilla, vestibulum risus at.
+                      {workerData.description}
                     </p>
                   </div>
                   <div className="container pt-4">
                     <div className="skill-detail">
                       <h5 style={{ fontWeight: 700 }}>Skill</h5>
                     </div>
-                    <div className="skill-list pb-2">
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 10px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        Phyton
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        Laravel
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        Golang
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        Javascript
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        PHP
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        HTML
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        C++
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        Kotlin
-                      </span>
-                      <span
-                        className="badge m-1"
-                        style={{
-                          backgroundColor: "#FBB017",
-                          color: "white",
-                          padding: "5px 15px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        Swift
-                      </span>
-                    </div>
+                    <ListSkill />
                   </div>
                   <div className="container mt-4">
                     <div className="profile-contact py-1">
@@ -226,70 +147,7 @@ const profile = () => {
                       Portofolio
                     </h2>
                   </div>
-                  <div className="portofolio-list pt-4">
-                    <div className="portofolio-card row justify-content-around">
-                      <div className="justify-content-center">
-                        <Image
-                          src={porto1}
-                          alt="porto1"
-                          className="w-auto"
-                        />
-                        <p className="text-center mt-2" style={{ fontSize: 14 }}>
-                          Remainder App
-                        </p>
-                      </div>
-                      <div className="justify-content-center">
-                        <Image
-                          src={porto2}
-                          alt="porto1"
-                          className="w-auto"
-                        />
-                        <p className="text-center mt-2" style={{ fontSize: 14 }}>
-                          Social media app
-                        </p>
-                      </div>
-                      <div className="justify-content-center">
-                        <Image
-                          src={porto3}
-                          alt="porto1"
-                          className="w-auto"
-                        />
-                        <p className="text-center mt-2" style={{ fontSize: 14 }}>
-                          Project management web
-                        </p>
-                      </div>
-                      <div className="justify-content-center">
-                        <Image
-                          src={porto4}
-                          alt="porto1"
-                          className="w-auto"
-                        />
-                        <p className="text-center mt-2" style={{ fontSize: 14 }}>
-                          Remainder app
-                        </p>
-                      </div>
-                      <div className="justify-content-center">
-                        <Image
-                          src={porto5}
-                          alt="porto1"
-                          className="w-auto"
-                        />
-                        <p className="text-center mt-2" style={{ fontSize: 14 }}>
-                          Social media app
-                        </p>
-                      </div>
-                      <div className="justify-content-center">
-                        <Image
-                          src={porto6}
-                          alt="porto1"
-                          className="w-auto"
-                        />
-                        <p className="text-center mt-2" style={{ fontSize: 14 }}>
-                          Project management web
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <ListPorto />
                   {/* Add more information as needed */}
                   <div className="my-2"
                     style={{
@@ -304,65 +162,7 @@ const profile = () => {
                       Pengalaman Kerja
                     </h3>
                   </div>
-                  <div className="experience-list">
-                    <div className="experience-info row pt-4">
-                      <div className="col-md-2 col-3">
-                        <Image
-                          src={exp1}
-                          alt=""
-                          className="w-auto"
-                        />
-                      </div>
-                      <div className="col-md-9 col-8">
-                        <h5 style={{ fontWeight: 600 }}>Engineer</h5>
-                        <h6>Tokopedia</h6>
-                        <div className="d-flex">
-                          <p className="mr-2" style={{ color: "#9EA0A5" }}>
-                            July 2019 - January 2020
-                          </p>
-                          <p className="ml-2" style={{ color: "#9EA0A5" }}>
-                            6 months
-                          </p>
-                        </div>
-                        <p style={{ fontSize: 14 }}>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Vestibulum erat orci, mollis nec gravida sed,
-                          ornare quis urna. Curabitur eu lacus fringilla,
-                          vestibulum risus at.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="experience-info row">
-                      <div className="col-md-2 col-3 pt-3">
-                        <Image
-                          src={exp1}
-                          alt=""
-                          className="w-auto"
-                        />
-                      </div>
-                      <div
-                        className="col-md-9 col-8 pt-3"
-                        style={{ borderTop: "1px solid" }}
-                      >
-                        <h5 style={{ fontWeight: 600 }}>Web Developer</h5>
-                        <h6>Tokopedia</h6>
-                        <div className="d-flex">
-                          <p className="mr-2" style={{ color: "#9EA0A5" }}>
-                            July 2019 - January 2020
-                          </p>
-                          <p className="ml-2" style={{ color: "#9EA0A5" }}>
-                            6 months
-                          </p>
-                        </div>
-                        <p style={{ fontSize: 14 }}>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Vestibulum erat orci, mollis nec gravida sed,
-                          ornare quis urna. Curabitur eu lacus fringilla,
-                          vestibulum risus at.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <ListExp />
                 </div>
               </div>
             </div>

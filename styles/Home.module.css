@@ -98,6 +98,11 @@
 
 
 @media only screen and (max-width: 768px) {
+  .abstract {
+    font-size: 30px;
+    text-align: center;
+  }
+
   .tagline {
     font-size: 30px;
     line-height: 43px !important;

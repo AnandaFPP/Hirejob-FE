@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "./component/Navbar/Navbar";
-import Footer from "./component/Footer/Footer";
-import Pagination from "./component/Pagination/Pagination";
-import defaultPic from "../styles/assets/img/default.jpg";
-import styles from "../styles/Home.module.css";
+import React, { useState } from "react";
+import Navbar from "../component/Navbar/Navbar";
+import Footer from "../component/Footer/Footer";
+import Pagination from "../component/Pagination/Pagination";
+import defaultPic from "../../styles/assets/img/default.jpg";
+import styles from "../../styles/Home.module.css";
 import Image from "next/image";
 import axios from "axios";
-import Cookies from "js-cookie";
-import ListSkill from "./component/ListSkill/ListSkill";
+// import Cookies from "js-cookie";
+import ListSkill from "../component/ListSkill/ListSkill";
 import Link from "next/link";
 
-const home = () => {
-  const [worker, setWorker] = useState([]);
+export async function getServerSideProps() {
+  const res = await axios.get('http://localhost:8000/worker/profile');
+  return {
+    props: { worker: res.data.data },
+  };
+}
+
+const SSRHome = ({ worker }) => {
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState("");
   // const [listSkill, setListSkill] = useState([]);
@@ -22,18 +28,6 @@ const home = () => {
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = worker.slice(firstPostIndex, lastPostIndex);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/worker/profile`)
-      .then((response) => {
-        setWorker(response.data.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching all workers:", error);
-      });
-  }, []);
 
   const handleSort = (option) => {
     setSortOption(option);
@@ -207,7 +201,10 @@ const home = () => {
                       </div>
                     </div>
                     <div className="col-sm-2 d-flex">
-                      <Link key={list.worker_id} href={`/profile/${list.worker_id}`}>
+                      <Link
+                        key={list.worker_id}
+                        href={`/profile/${list.worker_id}`}
+                      >
                         <button
                           className="btn"
                           style={{
@@ -243,4 +240,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default SSRHome;

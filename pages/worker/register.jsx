@@ -13,6 +13,7 @@ const register = () => {
     worker_phone: '',
     worker_pass: '',
     worker_confirm_pass: '',
+    worker_photo: null,
   });
 
   const handleChange = (e) => {
