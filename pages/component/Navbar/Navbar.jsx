@@ -1,5 +1,5 @@
 import React from "react";
-import profile from "../../../styles/assets/img/Mask_Group2.png";
+import profile from "../../../styles/assets/img/default.jpg";
 import Image from "next/image";
 import styles from "../../../styles/Home.module.css";
 import Link from "next/link";

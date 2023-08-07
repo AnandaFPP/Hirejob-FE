@@ -20,9 +20,9 @@ const profile = () => {
 
 
   useEffect(() => {
-    const worker_id = Cookies.get("worker_id")
+    const id = Cookies.get("worker_id")
     axios
-      .get(`http://localhost:8000/worker/profile/${worker_id}`)
+      .get(`http://localhost:8000/worker/profile/${id}`)
       .then(response => {
         setWorkerData(response.data.data[0]);
       })
