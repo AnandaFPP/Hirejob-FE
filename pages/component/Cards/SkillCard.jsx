@@ -1,27 +1,37 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const SkillCard = () => {
-  const id = Cookies.get("worker_id");
+  const [id, setId] = useState()
   const [list, setList] = useState([]);
   const [skill, setSkill] = useState({
     worker_id: "",
     skill_name: "",
   });
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const handleSubmitSkill = (e) => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8000/skill/", skill)
+      .post(`${process.env.NEXT_PUBLIC_API}/skill/`, skill)
       .then((response) => {
-        console.log(response.data);
-        swal({
-          title: "Skill added",
+        Toast.fire({
           icon: "success",
-          button: "Continue",
-        });
+          title: "Skill successfully added!",
+        })
         window.location.reload();
       })
       .catch((error) => {
@@ -37,21 +47,25 @@ const SkillCard = () => {
   };
 
   useEffect(() => {
-    const id = Cookies.get("worker_id");
+    const id = localStorage.getItem("worker_id");
     axios
-      .get(`http://localhost:8000/skill/profile/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API}/skill/profile/${id}`)
       .then((response) => {
         setList(response.data.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching worker profile:", error);
       });
   }, []);
 
+  useEffect(() => {
+    const isId = localStorage.getItem("worker_id");
+    setId(isId);
+  }, []);
+
   const handleDelete = (skillId) => {
     axios
-      .delete(`http://localhost:8000/skill/${skillId}`)
+      .delete(`${process.env.NEXT_PUBLIC_API}/skill/${skillId}`)
       .then(() => {
         // If the deletion from the database is successful, update the list in the state
         const updatedList = list.filter((skill) => skill.skill_id !== skillId);
@@ -129,7 +143,7 @@ const SkillCard = () => {
                     id="inputWorkerId"
                     name="worker_id"
                     placeholder="Masukkan nama lengkap"
-                    value={(skill.worker_id = id)}
+                    value={skill.worker_id = id}
                     onChange={handleChange}
                     style={{ padding: "20px 10px", fontSize: 14 }}
                   />

@@ -1,20 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import profile from "../../../styles/assets/img/default.jpg";
 import Image from "next/image";
 import styles from "../../../styles/Home.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const router = useRouter();
+  const [worker, setWorker] = useState([]);
+  const [recruiter, setRecruiter] = useState([]);
+  const [workerProfile, setWorkerProfile] = useState([]);
+  const [recruiterProfile, setRecruiterProfile] = useState([]);
 
   const handleLogout = () => {
-    Cookies.remove('authToken');
-    Cookies.remove('worker_id');
+    localStorage.removeItem("token");
+    localStorage.removeItem("worker_id");
+    localStorage.removeItem("worker_photo");
+    localStorage.removeItem("recruiter_id");
+    localStorage.removeItem("recruiter_photo");
 
-    router.push('/worker/login');
+    // window.location.reload();
+    router.push("/");
   };
+
+  useEffect(() => {
+    const workerId = localStorage.getItem("worker_id");
+    const recruiterId = localStorage.getItem("recruiter_id");
+    const workerAvatar = localStorage.getItem("worker_photo");
+    const recruiterAvatar = localStorage.getItem("recruiter_photo");
+    setWorker(workerId);
+    setRecruiter(recruiterId);
+    setWorkerProfile(workerAvatar);
+    setRecruiterProfile(recruiterAvatar);
+  }, []);
 
   return (
     <div>
@@ -55,8 +73,12 @@ const Navbar = () => {
               />
             </svg>
           </Link>
-          <Link href="/home"
-             className="text-decoration-none font-weight-bold" style={{ color: "#5E50A1"}}>Home
+          <Link
+            href="/home"
+            className="text-decoration-none font-weight-bold"
+            style={{ color: "#5E50A1" }}
+          >
+            Home
           </Link>
           <div className="row mt-3 m-2 align-items-center">
             <div>
@@ -79,7 +101,14 @@ const Navbar = () => {
                 aria-expanded="false"
               >
                 <Image
-                  src={profile}
+                  alt="image"
+                  src={
+                    workerProfile !== null && workerProfile !== "null"
+                      ? workerProfile
+                      : recruiterProfile !== null && recruiterProfile !== "null"
+                      ? recruiterProfile
+                      : profile
+                  }
                   width={32}
                   height={32}
                   className="rounded-circle"
@@ -89,12 +118,35 @@ const Navbar = () => {
                 className="dropdown-menu dropdown-menu-right"
                 aria-labelledby="profileDropdown"
               >
-                <Link href="/profile/${workerId}" className="dropdown-item">
-                  Profile
-                </Link>
-                <Link className="dropdown-item" href="/Edit">
-                  Settings
-                </Link>
+                {worker && (
+                  <Link
+                    href={`/workerProfile/${worker}`}
+                    className="dropdown-item"
+                  >
+                    Profile
+                  </Link>
+                )}
+                {recruiter && (
+                  <Link
+                    href={`/recruiterDetail/${recruiter}`}
+                    className="dropdown-item"
+                  >
+                    Profile
+                  </Link>
+                )}
+                {worker && (
+                  <Link href={`/worker/EditWorker/`} className="dropdown-item">
+                    Settings
+                  </Link>
+                )}
+                {recruiter && (
+                  <Link
+                    href={`/recruiterDetail/${recruiter}`}
+                    className="dropdown-item"
+                  >
+                    Settings
+                  </Link>
+                )}
                 <div className="dropdown-divider" />
                 <a className="dropdown-item" href="#" onClick={handleLogout}>
                   Logout

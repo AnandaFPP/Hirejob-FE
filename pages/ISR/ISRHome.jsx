@@ -175,8 +175,8 @@ const SSRHome = ({ worker }) => {
                       return 0;
                   }
                 })
-                .map((list) => (
-                  <div className={`row py-4  ${styles.profileCard}`}>
+                .map((list, index) => (
+                  <div className={`row py-4  ${styles.profileCard}`} key={index}>
                     <div className="col-sm-2 text-center">
                       <Image
                         src={defaultPic}

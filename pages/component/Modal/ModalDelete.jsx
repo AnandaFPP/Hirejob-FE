@@ -1,19 +1,30 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 const ModalDelete = ({experience, onDelete}) => {
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const handleDelete = () => {
     axios
-      .delete(`http://localhost:8000/experience/${experience.experience_id}`)
+      .delete(`${process.env.NEXT_PUBLIC_API}/experience/${experience.experience_id}`)
       .then(() => {
         onDelete(experience.experience_id);
-        swal({
-          title: "Experience Deleted",
+        Toast.fire({
           icon: "success",
-          button: "Continue",
-        });
+          title: "Experience successfully added!",
+        })
         window.location.reload();
       })
       .catch((error) => {

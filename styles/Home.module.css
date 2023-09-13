@@ -33,6 +33,10 @@
   );
 }
 
+#secondHero {
+  background: #f8f8f8;
+}
+
 .p {
   color: #46505C;
 }

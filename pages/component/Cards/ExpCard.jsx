@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "../../../styles/Home.module.css";
 import ModalEdit from "../Modal/ModalEdit";
 import ModalDelete from "../Modal/ModalDelete";
-import Cookies from "js-cookie";
 import axios from "axios";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
 const ExpCard = () => {
-  const id = Cookies.get("worker_id");
+  // const id = localStorage.getItem("worker_id");
+  const [id, setId] = useState()
   const [listExp, setListExp] = useState([]);
   const [exp, setExp] = useState({
     worker_id: "",
@@ -16,6 +17,18 @@ const ExpCard = () => {
     working_start: "",
     working_end: "",
     description: "",
+  });
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
   });
 
   const handleUpdate = (updatedExp) => {
@@ -43,14 +56,13 @@ const ExpCard = () => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8000/experience/", exp)
+      .post(`${process.env.NEXT_PUBLIC_API}/experience/`, exp)
       .then((response) => {
         console.log(response.data);
-        swal({
-          title: "Experience added",
+        Toast.fire({
           icon: "success",
-          button: "Continue",
-        });
+          title: "Experience successfully added!",
+        })
         window.location.reload();
       })
       .catch((error) => {
@@ -73,16 +85,20 @@ const ExpCard = () => {
   };
 
   useEffect(() => {
-    const id = Cookies.get("worker_id");
+    const id = localStorage.getItem("worker_id");
     axios
-      .get(`http://localhost:8000/experience/profile/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API}/experience/profile/${id}`)
       .then((response) => {
         setListExp(response.data.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching worker profile:", error);
       });
+  }, []);
+
+  useEffect(() => {
+    const isId = localStorage.getItem("worker_id");
+    setId(isId);
   }, []);
 
   return (
@@ -272,7 +288,7 @@ const ExpCard = () => {
                   Deskripsi singkat
                 </label>
                 <div className="col-sm-12">
-                  <input
+                  <textarea
                     type="text"
                     className="form-control"
                     id="inputDescription"

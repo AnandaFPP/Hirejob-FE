@@ -1,7 +1,6 @@
-import Cookies from "js-cookie";
 import React, { useState } from "react";
 import axios from "axios";
-import { format } from 'date-fns'
+import Swal from "sweetalert2";
 
 const ModalEdit = ({ experience, onUpdate }) => {
   
@@ -15,19 +14,30 @@ const ModalEdit = ({ experience, onUpdate }) => {
     }));
   };
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const handleUpdate = (e) => {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:8000/experience/${experience.experience_id}`, editedExp)
+      .put(`${process.env.NEXT_PUBLIC_API}/experience/${experience.experience_id}`, editedExp)
       .then((response) => {
         console.log(response.data);
         onUpdate(editedExp);
-        swal({
-          title: "Experience updated",
+        Toast.fire({
           icon: "success",
-          button: "Continue",
-        });
+          title: "Experience successfully added!",
+        })
         window.location.reload();
       })
       .catch((error) => {

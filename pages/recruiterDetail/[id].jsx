@@ -2,36 +2,28 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Navbar from "../component/Navbar/Navbar";
 import Image from "next/image";
-import defaultPic from '../../styles/assets/img/default.jpg'
+import defaultPic from "../../styles/assets/img/default.jpg";
 import axios from "axios";
-import Cookies from "js-cookie";
-import ListSkill from "../component/ListSkill/ListSkill";
-import ListPorto from "../component/ListPorto/ListPorto";
-import ListExp from "../component/ListExp/ListExp";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
+import Link from "next/link";
 // import { useRouter } from "next/router";
 
-const profile = () => {
-  const [workerData, setWorkerData] = useState([]);
-  
+const RecruiterDetail = () => {
   const router = useRouter();
-  // const { id } = router.query;
-
+  const [recruiterData, setRecruiterData] = useState([]);
 
   useEffect(() => {
-    const id = Cookies.get("worker_id")
+    const id = localStorage.getItem("recruiter_id");
     axios
-      .get(`http://localhost:8000/worker/profile/${id}`)
-      .then(response => {
-        setWorkerData(response.data.data[0]);
+      .get(`${process.env.NEXT_PUBLIC_API}/recruiter/profile/${id}`)
+      .then((response) => {
+        setRecruiterData(response.data.data[0]);
       })
-      .catch(error => {
-        console.error('Error fetching worker profile:', error);
+      .catch((error) => {
+        console.error("Error fetching worker profile:", error);
       });
-    },
-    
-    []);
+  }, []);
 
   // const router = useRouter();
   return (
@@ -39,44 +31,67 @@ const profile = () => {
       <Navbar />
       <main>
         {/* Content */}
-        <section style={{ paddingTop: "120px", paddingBottom: "20px" }} id={styles.hero}>
+        <section
+          style={{ paddingTop: "120px", paddingBottom: "20px" }}
+          id={styles.hero}
+        >
           <div className="container">
             <div className="row justify-content-between">
-              <div className="col-md-3 mb-3" style={{ fontSize: 14 }}>
-                <div className="card profile d-flex flex-column p-2">
+              <div className="col-md-12 mb-3" style={{ fontSize: 14 }}>
+                <center className="card profile d-flex flex-column p-2">
                   {/* Profile details content goes here */}
                   <div className="m-auto pt-3">
-                    <Image
-                      src={defaultPic}
-                      className="m-auto my-3"
-                      height={150}
-                      width={150}
-                      alt="avatar"
-                      style={{ borderRadius: "50%" }}
-                    />
+                    {!recruiterData.recruiter_photo ? (
+                      <Image
+                        src={defaultPic}
+                        className="m-auto my-3"
+                        height={150}
+                        width={150}
+                        alt="avatar"
+                        style={{ borderRadius: "50%" }}
+                      />
+                    ) : (
+                      <Image
+                        src={recruiterData.recruiter_photo}
+                        className="m-auto my-3"
+                        height={150}
+                        width={150}
+                        alt="avatar"
+                        style={{ borderRadius: "50%" }}
+                      />
+                    )}
                   </div>
                   <div className="container pt-4">
-                    <h5 style={{ fontWeight: 700 }}>{workerData.worker_name}</h5>
-                    <p>{workerData.last_work}</p>
+                    <h5 style={{ fontWeight: 700 }}>
+                      {recruiterData.recruiter_compname}
+                    </h5>
+                    <p>{recruiterData.recruiter_jobfield}</p>
                     <i
                       className="bi bi-geo-alt"
                       style={{ color: "#9EA0A5", fontStyle: "normal" }}
                     >
                       {" "}
-                      {workerData.domicile}
+                      {recruiterData.recruiter_city},{" "}
+                      {recruiterData.recruiter_province}
                     </i>
                     <p style={{ color: "#9EA0A5" }} className="pt-3">
-                      {workerData.last_work}
-                    </p>
-                    <p style={{ color: "#9EA0A5" }}>
-                      {workerData.description}
+                      {recruiterData.recruiter_desc}
                     </p>
                   </div>
                   <div className="container pt-4">
-                    <div className="skill-detail">
-                      <h5 style={{ fontWeight: 700 }}>Skill</h5>
-                    </div>
-                    <ListSkill />
+                    <Link href={"/recruiter/EditRecruiter"}>
+                      <button
+                        className="btn btn-sm"
+                        style={{
+                          backgroundColor: "#5e50a1",
+                          color: "white",
+                          fontWeight: 600,
+                          width: "30%",
+                        }}
+                      >
+                        Edit Profile
+                      </button>
+                    </Link>
                   </div>
                   <div className="container mt-4">
                     <div className="profile-contact py-1">
@@ -85,90 +100,36 @@ const profile = () => {
                         style={{ color: "#9EA0A5", fontStyle: "normal" }}
                       >
                         <span style={{ marginLeft: 10 }}>
-                          Louistommo@gmail.com
+                          {recruiterData.recruiter_emailcomp}
                         </span>
                       </i>
                     </div>
                     <div className="profile-contact py-1">
                       <i
-                        className="bi bi-instagram"
+                        className="bi bi-phone"
                         style={{ color: "#9EA0A5", fontStyle: "normal" }}
                       >
-                        <span style={{ marginLeft: 10 }}>@Louist91</span>
+                        <span style={{ marginLeft: 10 }}>
+                          {recruiterData.recruiter_phone}
+                        </span>
                       </i>
                     </div>
                     <div className="profile-contact py-1">
                       <i
-                        className="bi bi-github"
+                        className="bi bi-linkedin"
                         style={{ color: "#9EA0A5", fontStyle: "normal" }}
                       >
-                        <span style={{ marginLeft: 10 }}>@Louistommo</span>
-                      </i>
-                    </div>
-                    <div className="profile-contact py-1">
-                      <i
-                        className="bi bi-git"
-                        style={{ color: "#9EA0A5", fontStyle: "normal" }}
-                      >
-                        <span style={{ marginLeft: 10 }}>@Louistommo91</span>
+                        <span style={{ marginLeft: 10 }}>
+                          {recruiterData.recruiter_linkedin}
+                        </span>
                       </i>
                     </div>
                   </div>
-                  <div className="container mt-4 ">
-                    <button
-                      className="btn btn-sm"
-                      style={{
-                        backgroundColor: "#5e50a1",
-                        color: "white",
-                        fontWeight: 600,
-                        width: "100%",
-                      }}
-                    >
-                      Hire
-                    </button>
-                  </div>
-                  {/* Add more profile details as needed */}
-                </div>
-              </div>
-              <div className="col-md-9">
-                <div
-                  className="card information p-3"
-                  style={{ boxShadow: "0px 1px 20px 0px #C5C5C540" }}
-                >
-                  <div className="my-2"
-                    style={{
-                      borderBottom: "4px solid #5e50a1",
-                      width: "fit-content",
-                      letterSpacing: "0.5px",
-                      borderRadius: 2,
-                    }}
-                  >
-                    <h2 style={{ fontWeight: 600, letterSpacing: "0.5px" }}>
-                      Portofolio
-                    </h2>
-                  </div>
-                  <ListPorto />
-                  {/* Add more information as needed */}
-                  <div className="my-2"
-                    style={{
-                      borderBottom: "4px solid #5e50a1",
-                      width: "fit-content",
-                      fontWeight: 600,
-                      letterSpacing: "0.5px",
-                      borderRadius: 2,
-                    }}
-                  >
-                    <h3 style={{ fontWeight: 600, letterSpacing: "0.5px" }}>
-                      Pengalaman Kerja
-                    </h3>
-                  </div>
-                  <ListExp />
-                </div>
+                </center>
               </div>
             </div>
           </div>
         </section>
-        {/* End content */}
       </main>
       <footer>
         <section style={{ backgroundColor: "#5e50a1", marginTop: "-20px" }}>
@@ -247,4 +208,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default RecruiterDetail;

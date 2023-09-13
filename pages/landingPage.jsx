@@ -7,12 +7,10 @@ import lpimage3 from "../styles/assets/img/Group 1196.png";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
-import Link from "next/link";
 import Navbar from "./component/Navbar/Navbar";
 import Carousel from "./component/Carousel/Carousel";
-import Cookies from "js-cookie";
 
-const landingPage = () => {
+const LandingPage = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     rootMargin: "-50px 0px",
@@ -21,7 +19,7 @@ const landingPage = () => {
   const [login, setLogin] = useState(false);
 
   useEffect(() => {
-    const authToken = Cookies.get("authToken");
+    const authToken = localStorage.getItem("token");
 
     setLogin(!!authToken);
   }, []);
@@ -75,7 +73,7 @@ const landingPage = () => {
                       <div className="col-md-7 col-12">
                         <Image
                           src={lpimage1}
-                          alt=""
+                          alt="/"
                           id="first-content"
                           className={`w-100 h-100 ${
                             inView ? styles["slide-in-right"] : ""
@@ -89,7 +87,7 @@ const landingPage = () => {
                       <div className="col-md-6 col-12">
                         <Image
                           src={lpimage2}
-                          alt=""
+                          alt="/"
                           id="second-content"
                           className="w-100 h-100"
                         />
@@ -613,7 +611,7 @@ const landingPage = () => {
                       <div className="col-md-6 col-12">
                         <Image
                           src={lpimage3}
-                          alt=""
+                          alt="/"
                           id="second-content"
                           className="w-100 h-100"
                         />
@@ -663,7 +661,7 @@ const landingPage = () => {
         <div>
           {
             <div>
-              <LoginNavbar />
+              {/* <LoginNavbar /> */}
               <main>
                 <section>
                   <div className="container mt-5">
@@ -720,7 +718,7 @@ const landingPage = () => {
                       <div className="col-md-6 col-12">
                         <Image
                           src={lpimage2}
-                          alt=""
+                          alt="/"
                           id="second-content"
                           className="w-100 h-100"
                         />
@@ -1244,7 +1242,7 @@ const landingPage = () => {
                       <div className="col-md-6 col-12">
                         <Image
                           src={lpimage3}
-                          alt=""
+                          alt="/"
                           id="second-content"
                           className="w-100 h-100"
                         />
@@ -1295,4 +1293,4 @@ const landingPage = () => {
   );
 };
 
-export default landingPage;
+export default LandingPage;

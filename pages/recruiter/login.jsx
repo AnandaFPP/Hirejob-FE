@@ -1,8 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../styles/Auth.module.css";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
+import axios from "axios";
 
-const login = () => {
+const Login = () => {
+  const router = useRouter();
+
+  let [data, setData] = useState({
+    recruiter_email: "",
+    recruiter_confirmpassword: "",
+  });
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLoginRecruiter = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${process.env.NEXT_PUBLIC_API}/recruiter/login`, data)
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.statusCode === 201) {
+          Toast.fire({
+            title: "You are now logged in.",
+            icon: "success",
+          }).then(function () {
+            // Redirect the user
+            localStorage.setItem("token", res.data.data.token);
+            localStorage.setItem("recruiter_id", res.data.data.recruiter_id);
+            localStorage.setItem("recruiter_photo", res.data.data.recruiter_photo);
+            window.location.href = "/landingPage";
+          });
+        } else if (res.data.message === "Recruiter is unverify") {
+          Toast.fire({
+            title:
+              "Welcome to Peworld! To activate your account, click the verification link sent to your email address.",
+            icon: "success",
+          });
+        } else {
+          Toast.fire({
+            title: "Sorry, your email or password is incorrect.",
+            icon: "error",
+          }).then(function () {
+            // Redirect the user
+            window.location.href = "/recruiter/login";
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   return (
     <div>
       <div className="container">
@@ -66,7 +133,7 @@ const login = () => {
                 Deserunt dignissimos minima qui veniam, in adipisci!
               </h5>
             </div>
-            <form className="col-md-12 pt-5">
+            <form className="col-md-12 pt-5" onSubmit={handleLoginRecruiter}>
               <div className="form-group pb-3">
                 <label htmlFor="exampleInputEmail1" id={styles.label}>
                   Email
@@ -77,6 +144,10 @@ const login = () => {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   placeholder="Masukkan email anda"
+                  name="recruiter_email"
+                  value={data.recruiter_email}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -89,6 +160,10 @@ const login = () => {
                   id="exampleInputPassword1"
                   aria-describedby="passwordHelp"
                   placeholder="Masukkan kata sandi"
+                  name="recruiter_confirmpassword"
+                  value={data.recruiter_confirmpassword}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -116,4 +191,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

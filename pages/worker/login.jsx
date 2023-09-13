@@ -3,69 +3,72 @@ import styles from "../../styles/Auth.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
-import swal from "sweetalert";
-import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
-const login = () => {
-  let [worker_email, setEmail] = useState("");
-  let [worker_confirm_pass, setPassword] = useState("");
+const Login = () => {
   const router = useRouter();
 
-  let handleLogin = (e) => {
+  let [data, setData] = useState({
+    worker_email: "",
+    worker_confirm_pass: ""
+  });
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = (e) => {
     e.preventDefault();
-
-    if (!worker_email || !worker_confirm_pass) {
-      swal("Error", "Please fill in all the required fields.", "error");
-      return;
-    }
-
     axios
-      .post("http://localhost:8000/worker/login", {
-        worker_email,
-        worker_confirm_pass,
-      })
+      .post(`${process.env.NEXT_PUBLIC_API}/worker/login`, data)
       .then((res) => {
-        if (
-          res.data &&
-          res.data.data &&
-          res.data.data.token &&
-          res.data.data.worker_id
-        ) {
-          console.log(res);
-          swal({
-            title: "Login successful!",
+        console.log(res.data.message);
+        if (res.data.statusCode === 200) {
+          Toast.fire({
+            title: "You are now logged in.",
             icon: "success",
-            button: "Continue",
+          }).then(function () {
+            // Redirect the user
+            localStorage.setItem("token", res.data.data.token);
+            localStorage.setItem("worker_id", res.data.data.worker_id);
+            localStorage.setItem("worker_photo", res.data.data.worker_photo);
+            window.location.href = "/landingPage";
           });
-
-          Cookies.set("authToken", res.data.data.token, {
-            expires: 1,
-            path: "/",
-            secure: true,
+        } else if (res.data.message === "This account isn't verify yet!") {
+          Toast.fire({
+            title:
+              "Welcome to Peworld! To activate your account, click the verification link sent to your email address.",
+            icon: "success",
           });
-
-          Cookies.set("worker_id", res.data.data.worker_id, {
-            expires: 1,
-            path: "/",
-            secure: true,
-          });
-
-          router.push("/landingPage");
         } else {
-          console.log("Invalid response format");
-          swal({
-            title: "Login failed",
-            text: "Email or password is incorrect",
+          Toast.fire({
+            title: "Sorry, your email or password is incorrect.",
             icon: "error",
-            button: "OK",
+          }).then(function () {
+            // Redirect the user
+            window.location.href = "/worker/login";
           });
         }
       })
       .catch((err) => {
-        console.error(err);
-        alert("Login failed. Please check your email and password.");
+        console.log(err);
       });
   };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   return (
     <div>
@@ -141,8 +144,9 @@ const login = () => {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   placeholder="Masukkan email anda"
-                  value={worker_email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="worker_email"
+                  value={data.worker_email}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -156,8 +160,9 @@ const login = () => {
                   id="exampleInputPassword1"
                   aria-describedby="passwordHelp"
                   placeholder="Masukkan kata sandi"
-                  value={worker_confirm_pass}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="worker_confirm_pass"
+                  value={data.worker_confirm_pass}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -168,7 +173,7 @@ const login = () => {
                 >
                   Lupa kata sandi?
                 </a>
-                <button className="btn btn-block" id={styles.btnLog}>
+                <button className="btn btn-block" id={styles.btnLog} type="submit">
                   <h6 style={{ fontWeight: 700 }}>Masuk</h6>
                 </button>
                 <p className="text-regis text-center pt-3">
@@ -186,4 +191,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

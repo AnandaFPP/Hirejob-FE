@@ -1,8 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../styles/Auth.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import axios from "axios";
 
-const register = () => {
+const Register = () => {
+  const router = useRouter();
+
+  const [register, setRegister] = useState({
+    recruiter_name : "",
+    recruiter_email : "",
+    recruiter_compname : "",
+    recruiter_position : "",
+    recruiter_phone : "",
+    recruiter_password : "",
+    recruiter_confirmpassword : ""
+  });
+
+  const handleChange = (e) => {
+    setRegister({
+      ...register,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
+  const handleRegisterRecruiter = (e) => {
+    e.preventDefault();
+    try {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API}/recruiter/register`, register)
+        .then((res) => {
+          console.log(res.statusText);
+          if (res.status === 201) {
+            Toast.fire({
+              title:
+                "Congratulations! Your account has been successfully created. Please check your email for further instructions",
+              icon: "success",
+            }).then((result) => {
+              router.push("/recruiter/login");
+            });
+          } else if (res.status === 200) {
+            Toast.fire({
+              icon: "error",
+              title: res.data.message,
+            }).then((result) => {
+              router.push("/recruiter/register");
+            });
+          }
+        });
+    } catch (err) {
+      console.log(err)
+    }
+  };
+
   return (
     <div>
       <div className="container">
@@ -64,7 +127,7 @@ const register = () => {
                 Consequatur, harum.
               </h6>
             </div>
-            <form className="col-md-12 pt-4">
+            <form className="col-md-12 pt-4" onSubmit={handleRegisterRecruiter}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1" id={styles.label}>
                   Nama
@@ -74,7 +137,10 @@ const register = () => {
                   className="form-control"
                   id="exampleInputName1"
                   aria-describedby="nameHelp"
-                  placeholder="Masukkan nama panjang"
+                  placeholder="Masukkan nama"
+                  name="recruiter_name"
+                  value={register.recruiter_name}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -87,6 +153,9 @@ const register = () => {
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   placeholder="Masukkan alamat email"
+                  name="recruiter_email"
+                  value={register.recruiter_email}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -99,6 +168,9 @@ const register = () => {
                   id="exampleInputCompany1"
                   aria-describedby="companyHelp"
                   placeholder="Masukkan nama perusahaan"
+                  name="recruiter_compname"
+                  value={register.recruiter_compname}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -111,6 +183,9 @@ const register = () => {
                   id="exampleInputCompany2"
                   aria-describedby="companyHelp"
                   placeholder="Posisi di perusahaan anda"
+                  name="recruiter_position"
+                  value={register.recruiter_position}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -123,6 +198,9 @@ const register = () => {
                   id="exampleInputPhone"
                   aria-describedby="phoneHelp"
                   placeholder="Masukkan no handphone"
+                  name="recruiter_phone"
+                  value={register.recruiter_phone}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -135,6 +213,9 @@ const register = () => {
                   id="exampleInputPassword1"
                   aria-describedby="passwordHelp"
                   placeholder="Masukkan kata sandi"
+                  name="recruiter_password"
+                  value={register.recruiter_password}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -147,15 +228,18 @@ const register = () => {
                   id="exampleInputPassword2"
                   aria-describedby="passwordHelp"
                   placeholder="Masukkan konfirmasi kata sandi"
+                  name="recruiter_confirmpassword"
+                  value={register.recruiter_confirmpassword}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group pt-2">
-                <button className="btn btn-block" id={styles.btnLog}>
+                <button className="btn btn-block" id={styles.btnLog} type="submit">
                   <h6 style={{ fontWeight: 700 }}>Daftar</h6>
                 </button>
                 <p className="text-regis text-center pt-3">
                   Anda sudah punya akun?
-                  <Link href="/worker/register" id={styles.registerText}>
+                  <Link href="/recruiter/login" id={styles.registerText}>
                     Masuk disini
                   </Link>
                 </p>
@@ -168,4 +252,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;

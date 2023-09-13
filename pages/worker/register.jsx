@@ -3,8 +3,9 @@ import styles from "../../styles/Auth.module.css";
 import Link from "next/link";
 import axios from 'axios';
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
-const register = () => {
+const Register = () => {
   const router = useRouter();
 
   const [register, setRegister] = useState({
@@ -13,7 +14,6 @@ const register = () => {
     worker_phone: '',
     worker_pass: '',
     worker_confirm_pass: '',
-    worker_photo: null,
   });
 
   const handleChange = (e) => {
@@ -23,19 +23,44 @@ const register = () => {
     });
   };
 
-  let handleRegister = (e) => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
+  const handleRegister = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8000/worker/register", register)
-      .then((res) => {
-        console.log(res);
-        alert("Register successful!");
-        router.push("/worker/login");
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }
+    try {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API}/worker/register`, data)
+        .then((res) => {
+          console.log(res.statusText);
+          if (res.status === 201) {
+            Toast.fire({
+              title:
+                "Congratulations! Your account has been successfully created. Please check your email for further instructions",
+              icon: "success",
+            }).then((result) => {
+              router.push("/worker/login");
+            });
+          } else if (res.status === 200) {
+            Toast.fire({
+              icon: "error",
+              title: res.data.message,
+            }).then((result) => {
+              router.push("/worker/register");
+            });
+          }
+        });
+    } catch (err) {}
+  };
 
 
   return (
@@ -183,7 +208,7 @@ const register = () => {
                 </button>
                 <p className="text-regis text-center pt-3">
                   Anda sudah punya akun?
-                  <Link href="/worker/register" id={styles.registerText}>
+                  <Link href="/worker/login" id={styles.registerText}>
                     Masuk disini
                   </Link>
                 </p>
@@ -196,4 +221,4 @@ const register = () => {
   );
 };
 
-export default register ;
+export default Register ;

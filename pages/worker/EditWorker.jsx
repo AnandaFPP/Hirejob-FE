@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import styles from "../styles/Home.module.css";
-import Navbar from "./component/Navbar/Navbar";
-import defaultPic from '../styles/assets/img/default.jpg'
+import styles from "../../styles/Home.module.css";
+import Navbar from "../component/Navbar/Navbar";
+import defaultPic from '../../styles/assets/img/default.jpg'
 import Image from "next/image";
-import Footer from "./component/Footer/Footer";
-import Cookies from "js-cookie";
+import Footer from "../component/Footer/Footer";
 import axios from "axios";
 import swal from "sweetalert";
-import SkillCard from "./component/Cards/SkillCard";
-import ExpCard from "./component/Cards/ExpCard";
-import PortoCard from "./component/Cards/PortoCard";
+import SkillCard from "../component/Cards/SkillCard";
+import ExpCard from "../component/Cards/ExpCard";
+import PortoCard from "../component/Cards/PortoCard";
 
 
 const Edit = () => {
@@ -33,10 +32,10 @@ const Edit = () => {
       description: workerData.description
     });
     
-    const id = Cookies.get("worker_id");
+    const id = localStorage.getItem("worker_id");
     
     axios
-      .put(`http://localhost:8000/worker/profile/${id}`, workerData)
+      .put(`${process.env.NEXT_PUBLIC_API}/worker/profile/${id}`, workerData)
       .then(response => {
         console.log(response.data);
         swal({
@@ -59,10 +58,10 @@ const Edit = () => {
   }
   
   useEffect(() => {
-    const id = Cookies.get("worker_id");
+    const id = localStorage.getItem("worker_id");
     
     axios
-      .get(`http://localhost:8000/worker/profile/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API}/worker/profile/${id}`)
       .then(response => {
         setWorkerData(response.data.data[0]);
       })
@@ -83,14 +82,25 @@ const Edit = () => {
                 <div className="card profile d-flex flex-column p-2">
                   {/* Profile updates content goes here */}
                   <div className="m-auto pt-3">
-                    <Image
-                      src={defaultPic}
-                      className="m-auto my-3"
-                      height={150}
-                      width={150}
-                      alt="avatar"
-                      style={{ borderRadius: "50%" }}
-                    />
+                  {!workerData.worker_photo ? (
+                      <Image
+                        src={defaultPic}
+                        className="m-auto my-3"
+                        height={150}
+                        width={150}
+                        alt="avatar"
+                        style={{ borderRadius: "50%" }}
+                      />
+                    ) : (
+                      <Image
+                        src={workerData.worker_photo}
+                        className="m-auto my-3"
+                        height={150}
+                        width={150}
+                        alt="avatar"
+                        style={{ borderRadius: "50%", objectFit: "cover" }}
+                      />
+                    )}
                   </div>
                   <div className="container pt-4">
                     <h5 style={{ fontWeight: 700 }}>{workerData.worker_name}</h5>

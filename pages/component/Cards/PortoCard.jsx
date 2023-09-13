@@ -2,15 +2,30 @@ import React, { useState } from "react";
 import styles from "../../../styles/Home.module.css";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 const PortoCard = () => {
-  const id = Cookies.get("worker_id");
+  // const id = Cookies.get("worker_id");
+  const [id, setId] = useState()
   let [photo, setPhoto] = useState(null);
   const [porto, setPorto] = useState({
     worker_id: "",
     porto_name: "",
     link_repo: "",
     porto_photo: "",
+  });
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
   });
 
   const handleSubmitPorto = (e) => {
@@ -25,22 +40,21 @@ const PortoCard = () => {
         }
 
     axios
-      .post("http://localhost:8000/portofolio/", formData, {
+      .post(`${process.env.NEXT_PUBLIC_API}/portofolio/`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     })
       .then((response) => {
         console.log(response.data);
-        swal({
-          title: "Portofolio added",
+        Toast.fire({
           icon: "success",
-          button: "Continue",
-        });
+          title: "Portofolio successfully added!",
+        })
         window.location.reload();
       })
       .catch((error) => {
-        console.error("Error updating worker's experience", error);
+        console.error("Error updating worker's portofolio", error);
       });
   };
 
@@ -54,6 +68,11 @@ const PortoCard = () => {
   let handleUpload = (e) => {
     setPhoto(e.target.files[0]);
   };
+
+  useEffect(() => {
+    const isId = localStorage.getItem("worker_id");
+    setId(isId);
+  }, []);
 
   return (
     <div>
@@ -90,7 +109,7 @@ const PortoCard = () => {
                     id="inputWorkerId"
                     name="worker_id"
                     placeholder="Masukkan nama lengkap"
-                    value={(porto.worker_id = id)}
+                    value={porto.worker_id = id}
                     onChange={handleChange}
                     style={{ padding: "20px 10px", fontSize: 14 }}
                   />

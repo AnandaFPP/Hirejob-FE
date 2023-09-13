@@ -29,6 +29,7 @@ const Carousel = () => {
                       <div className="col-md-4">
                         <div className="card card-body">
                           <Image
+                            alt="image"
                             className="m-auto"
                             src={carousel1}
                             style={{
@@ -52,6 +53,7 @@ const Carousel = () => {
                       <div className="col-md-4">
                         <div className="card card-body">
                           <Image
+                            alt="image"
                             className="m-auto"
                             src={carousel2}
                             style={{
@@ -75,6 +77,7 @@ const Carousel = () => {
                       <div className="col-md-4">
                         <div className="card card-body">
                           <Image
+                            alt="image"
                             className="m-auto"
                             src={carousel3}
                             style={{
@@ -102,6 +105,7 @@ const Carousel = () => {
                       <div className="col-md-4">
                         <div className="card card-body">
                           <Image
+                            alt="image"
                             className="m-auto"
                             src={carousel4}
                             style={{
@@ -125,6 +129,7 @@ const Carousel = () => {
                       <div className="col-md-4">
                         <div className="card card-body">
                           <Image
+                            alt="image"
                             className="m-auto"
                             src={carousel1}
                             style={{
@@ -151,6 +156,7 @@ const Carousel = () => {
                           style={{ borderRadius: 10 }}
                         >
                           <Image
+                            alt="image"
                             className="m-auto"
                             src={carousel2}
                             style={{

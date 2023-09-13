@@ -1,14 +1,17 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const ListSkill = () => {
   const [listSkill, setListSkill] = useState([]);
+  const router = useRouter();
+
+  const { id } = router.query;
 
   useEffect(() => {
-    const id = Cookies.get("worker_id")
     axios
-      .get(`http://localhost:8000/skill/profile/${id}`)
+      .get(`${process.env.NEXT_PUBLIC_API}/skill/profile/${id}`)
       .then((response) => {
         setListSkill(response.data.data);
         console.log(response.data);
@@ -16,6 +19,7 @@ const ListSkill = () => {
       .catch((error) => {
         console.error("Error fetching worker profile:", error);
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>

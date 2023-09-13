@@ -6,15 +6,12 @@ import defaultPic from "../styles/assets/img/default.jpg";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import axios from "axios";
-import Cookies from "js-cookie";
-import ListSkill from "./component/ListSkill/ListSkill";
 import Link from "next/link";
 
-const home = () => {
+const Home = () => {
   const [worker, setWorker] = useState([]);
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState("");
-  // const [listSkill, setListSkill] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(4);
@@ -25,7 +22,7 @@ const home = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/worker/profile`)
+      .get(`${process.env.NEXT_PUBLIC_API}/worker/profile`)
       .then((response) => {
         setWorker(response.data.data);
         console.log(response.data);
@@ -38,19 +35,6 @@ const home = () => {
   const handleSort = (option) => {
     setSortOption(option);
   };
-
-  // useEffect(() => {
-  //   const id = Cookies.get("worker_id");
-  //   axios
-  //     .get(`http://localhost:8000/skill/profile/${id}`)
-  //     .then((response) => {
-  //       setListSkill(response.data.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching worker profile:", error);
-  //     });
-  // }, []);
 
   return (
     <div>
@@ -180,17 +164,28 @@ const home = () => {
                       return 0;
                   }
                 })
-                .map((list) => (
-                  <div className={`row py-4  ${styles.profileCard}`}>
+                .map((list, index) => (
+                  <div className={`row py-4  ${styles.profileCard}`} key={index}>
                     <div className="col-sm-2 text-center">
+                    {!list.worker_photo ? (
                       <Image
                         src={defaultPic}
                         className="m-auto my-3"
-                        height={130}
-                        width={130}
+                        height={150}
+                        width={150}
                         alt="avatar"
                         style={{ borderRadius: "50%" }}
                       />
+                    ) : (
+                      <Image
+                        src={list.worker_photo}
+                        className="m-auto my-3"
+                        height={150}
+                        width={150}
+                        alt="avatar"
+                        style={{ borderRadius: "50%", objectFit: "cover" }}
+                      />
+                    )}
                     </div>
                     <div className="col-sm-8">
                       <h5 style={{ fontWeight: "700" }}>{list.worker_name}</h5>
@@ -203,11 +198,29 @@ const home = () => {
                         {list.domicile}
                       </i>
                       <div className="skill-list pb-2">
-                        <ListSkill />
+                        <div className="row m-0 skill-list pb-2">
+                          {list.skills.map((skill, index) => (
+                            <span
+                              key={index}
+                              className="badge mr-1 mb-1"
+                              style={{
+                                backgroundColor: "#FBB017",
+                                color: "white",
+                                padding: "10px 20px",
+                                opacity: "0.8",
+                              }}
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                     <div className="col-sm-2 d-flex">
-                      <Link key={list.worker_id} href={`/profile/${list.worker_id}`}>
+                      <Link
+                        key={list.worker_id}
+                        href={`/workerDetail/${list.worker_id}`}
+                      >
                         <button
                           className="btn"
                           style={{
@@ -243,4 +256,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Home;
