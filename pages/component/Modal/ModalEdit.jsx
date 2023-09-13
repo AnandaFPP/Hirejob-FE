@@ -47,7 +47,8 @@ const ModalEdit = ({ experience, onUpdate }) => {
   
   return (
     <div>
-      <div className="modal fade" id={`editModal-${experience.experience_id}`} tabIndex={-1} role="dialog" aria-labelledby={`editModalLabel-${experience.experience_id}`} aria-hidden="true">
+      <div className="modal fade" id="editModal" tabIndex={-1} role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+      {/* <div className="modal fade" id={`editModal-${experience.experience_id}`} tabIndex={-1} role="dialog" aria-labelledby={`editModalLabel-${experience.experience_id}`} aria-hidden="true"> */}
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">

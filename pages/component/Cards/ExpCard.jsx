@@ -7,7 +7,6 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 
 const ExpCard = () => {
-  // const id = localStorage.getItem("worker_id");
   const [id, setId] = useState()
   const [listExp, setListExp] = useState([]);
   const [exp, setExp] = useState({

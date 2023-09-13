@@ -15,8 +15,12 @@ import Link from "next/link";
 const WorkerDetail = () => {
   const router = useRouter();
   const [workerData, setWorkerData] = useState([]);
+  const [recId, setRecId] = useState();
 
-  const recruiterIdExists = localStorage.getItem("recruiter_id");
+  useEffect(() => {
+    const recruiterIdExists = localStorage.getItem("recruiter_id")
+    setRecId(recruiterIdExists)
+  }, []);
 
   const { id } = router.query;
 
@@ -129,7 +133,7 @@ const WorkerDetail = () => {
                   </div>
                   <div className="container mt-4 ">
                   <Link href={`/hire/${router.query.id}`}>
-                  {recruiterIdExists ? (
+                  {recId ? (
                         <button
                           className="btn btn-sm"
                           style={{

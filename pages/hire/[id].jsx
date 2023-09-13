@@ -48,7 +48,6 @@ const Hire = () => {
       ...hire,
       [e.target.name]: e.target.value,
     });
-    console.log(hire)
   };
 
   useEffect(() => {

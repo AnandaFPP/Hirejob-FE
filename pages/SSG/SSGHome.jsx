@@ -11,7 +11,7 @@ import ListSkill from "../component/ListSkill/ListSkill";
 import Link from "next/link";
 
 export async function getStaticProps() {
-  const res = await axios.get('http://localhost:8000/worker/profile');
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/worker/profile`);
   return {
     props: { worker: res.data.data },
   };
