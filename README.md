@@ -101,28 +101,35 @@ NEXT_PUBLIC_API = [BACKEND_URL]
   
   <tr>
     <td><img width="350px" src="/styles/assets/docs/landingpage.png"  border="0" border="0" alt="1" /></td>
-    <td> <img width="350px" src="/styles/assets/docs/workerprofile.png" \ border="0"  border="0"  border="0"  alt="2" /></td>
+    <td> <img width="350px" src="/styles/assets/docs/homepage.png" \ border="0"  border="0"  border="0"  alt="2" /></td>
   </tr>
    <tr>
     <td>Landing Page</td>
-    <td>Worker Profile</td>
+    <td>Job Seekers List</td>
   </tr>
 
    <tr>
     <td><img width="350px" src="/styles/assets/docs/recruiterprofilepage.png"  border="0" border="0" alt="1" /></td>
-    <td><img width="350px" src="/styles/assets/docs/homepage.png"  border="0" border="0" alt="1" /></td>
+    <td><img width="350px" src="/styles/assets/docs/workerprofile.png"  border="0" border="0" alt="1" /></td>
   </tr>
    <tr>
     <td>Recruiter Profile</td>
-    <td>Job Seekers List</td>
+    <td>Worker Profile</td>
   </tr>
 
   <tr>
+    <td><img width="350px" src="/styles/assets/docs/editworker.png"  border="0" border="0" alt="1" /></td>
     <td><img width="350px" src="/styles/assets/docs/workerdetail.png"  border="0" border="0" alt="1" /></td>
+  </tr>
+   <tr>
+    <td>Edit Worker's Profile</td>
+    <td>Hire Profile</td>
+  </tr>
+
+  <tr>
     <td><img width="350px" src="/styles/assets/docs/hiringpage.png"  border="0" border="0" alt="1" /></td>
   </tr>
    <tr>
-    <td>Hire Profile</td>
     <td>Hire Message</td>
   </tr>
 
