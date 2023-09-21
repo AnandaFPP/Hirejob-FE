@@ -102,7 +102,7 @@ const WorkerDetail = () => {
                         style={{ color: "#9EA0A5", fontStyle: "normal" }}
                       >
                         <span style={{ marginLeft: 10 }}>
-                          Louistommo@gmail.com
+                          {workerData.worker_email}
                         </span>
                       </i>
                     </div>
