@@ -101,7 +101,7 @@ NEXT_PUBLIC_API = [BACKEND_URL]
   
   <tr>
     <td><img width="350px" src="/styles/assets/docs/landingpage.png"  border="0" border="0" alt="1" /></td>
-    <td> <img width="350px" src="/styles/assets/docs/homepage.png" \ border="0"  border="0"  border="0"  alt="2" /></td>
+    <td> <img width="350px" src="/styles/assets/docs/home.png" \ border="0"  border="0"  border="0"  alt="2" /></td>
   </tr>
    <tr>
     <td>Landing Page</td>
